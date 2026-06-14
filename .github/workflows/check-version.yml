@@ -35,12 +35,11 @@ jobs:
         run: |
           LATEST="${{ steps.latest_tag.outputs.latest_tag }}"
           LAST="${{ steps.last_version.outputs.last_version }}"
-          FORCE="${{ github.event.inputs.force }}"
 
           echo "Latest ComfyUI: ${LATEST}"
           echo "Last tagged:    ${LAST}"
 
-          if [ "${FORCE}" = "true" ] || [ "${LATEST}" != "${LAST}" ]; then
+          if [ "${LATEST}" != "${LAST}" ]; then
             echo "New version detected: ${LATEST}. Creating tag v${LATEST}."
             git config user.name "github-actions[bot]"
             git config user.email "github-actions[bot]@users.noreply.github.com"

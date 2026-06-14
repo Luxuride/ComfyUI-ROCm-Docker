@@ -26,6 +26,7 @@ RUN pip3 install --no-cache-dir -r requirements.txt
 # Set environment variables
 ENV PYTHONPATH=/opt/ComfyUI
 ENV HF_HOME=/opt/ComfyUI/models/checkpoints
+ENV PYTHONUNBUFFERED=1
 ENV HIP_VISIBLE_DEVICES=0
 ENV HSA_OVERRIDE_GFX_VERSION=11.0.0 
 

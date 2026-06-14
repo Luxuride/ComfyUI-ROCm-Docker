@@ -32,9 +32,22 @@ ENV HSA_OVERRIDE_GFX_VERSION=11.0.0
 # Expose ComfyUI port
 EXPOSE 8188
 
+# Copy repository defaults to a separate location so they survive bind mounts
+RUN cp -r models /opt/ComfyUI_defaults/models && \
+    cp -r input /opt/ComfyUI_defaults/input && \
+    cp -r output /opt/ComfyUI_defaults/output
+
+# Init script: copy default content into mount points if they are empty
+COPY init_defaults.sh /opt/init_defaults.sh
+RUN chmod +x /opt/init_defaults.sh
+
+# Entrypoint wrapper: run init then exec into ComfyUI
+COPY entrypoint.sh /opt/entrypoint.sh
+RUN chmod +x /opt/entrypoint.sh
+
 # Set volume mount points for persistent storage
 VOLUME ["/opt/ComfyUI/models", "/opt/ComfyUI/custom_nodes", "/opt/ComfyUI/input", "/opt/ComfyUI/output", "/opt/ComfyUI/user"]
 
-# Default entrypoint to run ComfyUI via main.py
-ENTRYPOINT ["python3.12", "main.py"]
+# Default entrypoint: init defaults then run ComfyUI
+ENTRYPOINT ["/opt/entrypoint.sh"]
 CMD ["--listen", "0.0.0.0"]

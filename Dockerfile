@@ -33,7 +33,8 @@ ENV HSA_OVERRIDE_GFX_VERSION=11.0.0
 EXPOSE 8188
 
 # Copy repository defaults to a separate location so they survive bind mounts
-RUN cp -r models /opt/ComfyUI_defaults/models && \
+RUN mkdir -p /opt/ComfyUI_defaults && \
+    cp -r models /opt/ComfyUI_defaults/models && \
     cp -r input /opt/ComfyUI_defaults/input && \
     cp -r output /opt/ComfyUI_defaults/output
 

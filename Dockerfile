@@ -32,8 +32,8 @@ ENV HSA_OVERRIDE_GFX_VERSION=11.0.0
 # Expose ComfyUI port
 EXPOSE 8188
 
-# Set volume mount points for persistent storage (models and custom nodes)
-VOLUME ["/opt/ComfyUI/models", "/opt/ComfyUI/custom_nodes"]
+# Set volume mount points for persistent storage
+VOLUME ["/opt/ComfyUI/models", "/opt/ComfyUI/custom_nodes", "/opt/ComfyUI/input", "/opt/ComfyUI/output", "/opt/ComfyUI/user"]
 
 # Default entrypoint to run ComfyUI via main.py
 ENTRYPOINT ["python3.12", "main.py"]

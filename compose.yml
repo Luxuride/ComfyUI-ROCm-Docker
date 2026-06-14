@@ -1,0 +1,22 @@
+services:
+  comfyui:
+    image: comfyui-rocm:v0.24.1
+    container_name: comfyui-rocm
+    devices:
+      - /dev/kfd:/dev/kfd
+      - /dev/dri:/dev/dri
+    group_add:
+      - video
+    security_opt:
+      - seccomp=unconfined
+    shm_size: 8g
+    volumes:
+      - ./models:/opt/ComfyUI/models
+      - ./input:/opt/ComfyUI/input
+      - ./output:/opt/ComfyUI/output
+    ports:
+      - "8188:8188"
+    environment:
+      - HSA_OVERRIDE_GFX_VERSION=11.0.0
+      - HIP_VISIBLE_DEVICES=0
+    restart: unless-stopped

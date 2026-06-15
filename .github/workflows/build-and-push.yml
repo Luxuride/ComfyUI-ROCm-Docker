@@ -3,7 +3,7 @@ name: Build and Push on Tag
 on:
   push:
     tags:
-      - 'v*'
+      - '*'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}

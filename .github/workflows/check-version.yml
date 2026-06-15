@@ -24,7 +24,7 @@ jobs:
       - name: Read last tagged version
         id: last_version
         run: |
-          LAST=$(git tag -l 'v*' --sort=-v:refname | head -n1 | sed 's/^v//')
+          LAST=$(git tag -l --sort=-v:refname | head -n1)
           if [ -n "${LAST}" ]; then
             echo "last_version=${LAST}" >> "$GITHUB_OUTPUT"
           else
@@ -40,11 +40,11 @@ jobs:
           echo "Last tagged:    ${LAST}"
 
           if [ "${LATEST}" != "${LAST}" ]; then
-            echo "New version detected: ${LATEST}. Creating tag v${LATEST}."
+            echo "New version detected: ${LATEST}. Creating tag ${LATEST}."
             git config user.name "github-actions[bot]"
             git config user.email "github-actions[bot]@users.noreply.github.com"
-            git tag "v${LATEST}"
-            git push origin "v${LATEST}"
+            git tag "${LATEST}"
+            git push https://x-access-token:${{ secrets.TAG_PUSH_TOKEN }}@github.com/Luxuride/ComfyUI-ROCm-Docker.git "${LATEST}"
           else
             echo "No new ComfyUI version detected. Skipping."
           fi

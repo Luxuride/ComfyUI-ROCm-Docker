@@ -18,7 +18,7 @@ jobs:
       - name: Fetch latest ComfyUI release
         id: latest_tag
         run: |
-          LATEST=$(curl -sL https://api.github.com/repos/comfyanonymous/ComfyUI/releases/latest | jq -r '.tag_name')
+          LATEST=$(curl -sL https://api.github.com/repos/comfyanonymous/ComfyUI/releases/latest | jq -r '.tag_name' | sed 's/^v//')
           echo "latest_tag=${LATEST}" >> "$GITHUB_OUTPUT"
 
       - name: Read last tagged version

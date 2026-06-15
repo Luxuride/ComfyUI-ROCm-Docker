@@ -10,22 +10,22 @@ jobs:
   check:
     name: Check for New Version
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6
+        with:
+          token: ${{ secrets.TAG_PUSH_TOKEN }}
 
       - name: Fetch latest ComfyUI release
         id: latest_tag
         run: |
-          LATEST=$(curl -sL https://api.github.com/repos/comfyanonymous/ComfyUI/releases/latest | jq -r '.tag_name' | sed 's/^v//')
+          LATEST=$(curl -sL https://api.github.com/repos/comfyanonymous/ComfyUI/releases/latest | jq -r '.tag_name')
           echo "latest_tag=${LATEST}" >> "$GITHUB_OUTPUT"
 
       - name: Read last tagged version
         id: last_version
         run: |
-          LAST=$(git tag -l --sort=-v:refname | head -n1)
+          LAST=$(git tag -l 'v*' --sort=-v:refname | head -n1)
           if [ -n "${LAST}" ]; then
             echo "last_version=${LAST}" >> "$GITHUB_OUTPUT"
           else
@@ -45,7 +45,7 @@ jobs:
             git config user.name "github-actions[bot]"
             git config user.email "github-actions[bot]@users.noreply.github.com"
             git tag "${LATEST}"
-            git push https://x-access-token:${{ secrets.TAG_PUSH_TOKEN }}@github.com/Luxuride/ComfyUI-ROCm-Docker.git "${LATEST}"
+            git push origin "${LATEST}"
           else
             echo "No new ComfyUI version detected. Skipping."
           fi

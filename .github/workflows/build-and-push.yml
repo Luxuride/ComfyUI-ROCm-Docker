@@ -3,11 +3,7 @@ name: Build and Push on Tag
 on:
   push:
     tags:
-      - '*'
-
-concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
+      - 'v*'
 
 env:
   REGISTRY: ghcr.io

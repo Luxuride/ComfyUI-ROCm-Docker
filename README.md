@@ -34,6 +34,8 @@ services:
     restart: unless-stopped
 ```
 
+> **Warning:** Do **not** use the `:z` or `:Z` SELinux volume relabeling flags (e.g., `-v $(pwd)/models:/opt/ComfyUI/models:z`). Relabeling changes file ownership/labels inside the container and will cause ComfyUI to crash during generation.
+
 ## Volumes
 
 | Path | Purpose |
